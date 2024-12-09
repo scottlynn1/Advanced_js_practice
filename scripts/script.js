@@ -15,37 +15,54 @@ function addBookToLibrary(title, author, pages, read) {
     return book
 }
 
-function add_read_button(newrow) {
+function add_read_button(row) {
     let readButton = document.createElement('button');
     readButton.setAttribute('type', 'button');
     readButton.innerText = 'Read';
-    newrow.appendChild(readButton);
+    row.appendChild(readButton);
     let readstatus = readButton.previousElementSibling;
     readButton.addEventListener('click', ()=>{
-        console.log("hello, World");
-        console.log(readstatus.textContent);
         if (readstatus.textContent == 'True') {
             readstatus.textContent = 'False';
-            console.log(readstatus.textContent);
         } else {
             readstatus.textContent = 'True';
-            console.log(readstatus.textContent);
         }
     })
 }
 
+function add_remove_button(row) {
+    let removeButton = document.createElement('button');
+    removeButton.setAttribute('type', 'button');
+    removeButton.innerText = 'Remove';
+    row.appendChild(removeButton);
+    removeButton.addEventListener('click', (e)=>{
+        let row = e.target.parentElement;
+        let number = row.dataset.booknumber;
+        myLibrary.splice(number, 1);
+        while (row.nextElementSibling) {
+            row = row.nextElementSibling;
+            row.setAttribute('data-booknumber', row.dataset.booknumber-1);
+            console.log(row.dataset.booknumber);
+        }
+        e.target.parentElement.remove();
+    })
+}
+
 function displayLibrary() {
+    table.replaceChildren();
     for (let i in myLibrary) {
         const row = document.createElement("tr");
-        row.setAttribute("data-booknumber", i+1);
+        row.setAttribute("data-booknumber", i);
+        console.log(row.dataset.booknumber);
         table.appendChild(row);
-        for (let j of myLibrary[i]) {
+        for (let j of [myLibrary[i].title, myLibrary[i].author, myLibrary[i].pages, myLibrary[i].read]) {
             let cell = document.createElement('td');
             let text = document.createTextNode(j);
             cell.appendChild(text);
             row.appendChild(cell);
         }
         add_read_button(row);
+        add_remove_button(row);
     }
 }
 
@@ -63,30 +80,9 @@ const formSubmit = document.querySelector("#formSubmit");
 form.addEventListener('submit', (e)=>{
     e.preventDefault();
     book = addBookToLibrary(title.value, author.value, pages.value, read.value);
-    let newrow = document.createElement('tr');
-    newrow.setAttribute('data-booknumber', myLibrary.length);
-    table.appendChild(newrow);
-    for (let i in book) {
-        let cell = document.createElement('td');
-        let text = document.createTextNode(book[i]);
-        cell.appendChild(text);
-        newrow.appendChild(cell);
-    }
-    add_read_button(newrow);
-    let removeButton = document.createElement('button');
-    removeButton.setAttribute('type', 'button');
-    removeButton.innerText = 'Remove';
-    newrow.appendChild(removeButton);
-    removeButton.addEventListener('click', (e)=>{
-        let row = e.target.parentElement;
-        let number = row.dataset.booknumber;
-        myLibrary.splice(number-1, 1);
-        while (row.nextElementSibling) {
-            row = row.nextElementSibling;
-            row.setAttribute('data-booknumber', row.dataset.booknumber-1);
-        }
-        e.target.parentElement.remove();
-    })
+    displayLibrary();
+    //add_read_button(newrow);
+    //add_remove_button(newrow);
     form.reset();
     dialog.close();
 });
