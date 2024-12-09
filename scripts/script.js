@@ -21,11 +21,15 @@ function add_read_button(row) {
     readButton.innerText = 'Read';
     row.appendChild(readButton);
     let readstatus = readButton.previousElementSibling;
-    readButton.addEventListener('click', ()=>{
+    readButton.addEventListener('click', (e)=>{
+        let row = e.target.parentElement
+        let number = row.dataset.booknumber
         if (readstatus.textContent == 'True') {
             readstatus.textContent = 'False';
+            myLibrary[number].read = 'False';
         } else {
             readstatus.textContent = 'True';
+            myLibrary[number].read = 'True';
         }
     })
 }
@@ -53,7 +57,6 @@ function displayLibrary() {
     for (let i in myLibrary) {
         const row = document.createElement("tr");
         row.setAttribute("data-booknumber", i);
-        console.log(row.dataset.booknumber);
         table.appendChild(row);
         for (let j of [myLibrary[i].title, myLibrary[i].author, myLibrary[i].pages, myLibrary[i].read]) {
             let cell = document.createElement('td');
