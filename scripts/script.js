@@ -84,8 +84,6 @@ form.addEventListener('submit', (e)=>{
     e.preventDefault();
     book = addBookToLibrary(title.value, author.value, pages.value, read.value);
     displayLibrary();
-    //add_read_button(newrow);
-    //add_remove_button(newrow);
     form.reset();
     dialog.close();
 });
