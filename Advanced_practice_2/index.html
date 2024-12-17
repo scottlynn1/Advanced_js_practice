@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <button id="game_start" type="button">Start Game</button>
+    </div>
+    <div>
+        <button id="restart_game" type="button">Restart Game</button>
+    </div>
+    <div id="board_display">
+        <div data-position="0"></div>
+        <div data-position="1"></div>
+        <div data-position="2"></div>
+        <div data-position="3"></div>
+        <div data-position="4"></div>
+        <div data-position="5"></div>
+        <div data-position="6"></div>
+        <div data-position="7"></div>
+        <div data-position="8"></div>
+    </div>
+    <dialog>
+        <form method="post" action="">
+            <fieldset>
+                <legend>Player 1</legend>
+                <label for="Player_1_Name">Name:</label>
+                <input id="Player_1_Name" type="text" name="Player_1_Name">
+                <label for="Player_1_Symbol">Symbol:</label>
+                <input id="Player_1_Symbol" type="text" name="Player_1_Symbol">
+            </fieldset>
+            <fieldset>
+                <legend>Player 2</legend>
+                <label for="Player_2_Name">Name:</label>
+                <input id="Player_2_Name" type="text" name="Player_2_Name">
+                <label for="Player_2_Symbol">Symbol:</label>
+                <input id="Player_2_Symbol" type="text" name="Player_2_Symbol">
+            </fieldset>
+            <button id="formSubmit" type="submit">Submit</button>
+        </form>
+    </dialog>
+
+    <script type="text/javascript" src="script.js"></script>
+
+
+</body>
+</html>
