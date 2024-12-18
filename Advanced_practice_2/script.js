@@ -11,19 +11,25 @@ const gameboard = (function () {
         board[position] = symbol;
     };
 
-    const clear_board = () => board = new Array(9).fill(null);
+    const clearBoard = () => {
+        for (square in board) {
+            board[square] = null;
+        }
+    }
 
-    return {board, move, clear_board};
+    return {board, move, clearBoard};
 })();
 
 // logic for display of board
 const display = (function () {
-    
 
-    const display_board = () => {
-
+    const displayBoard = function (divcontent) {
+        for (square in gameboard.board) {
+            divcontent = gameboard.board[square]
+        }
     };
 
+    return {displayBoard};
 })();
 
 //logic for flow of game
@@ -110,7 +116,7 @@ function activateBoard() {
             e.target.textContent = gameboard.board[Number(square)];
             if (game.checkwinner()) {
                 console.log(`${currentPlayer.name} wins!`)
-                gameboard.clear_board();
+                gameboard.clearBoard();
             }
             game.changePlayer();
         }
