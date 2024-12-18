@@ -5,9 +5,8 @@ function player (name, symbol) {
 
 //logic for gameboard
 const gameboard = (function () {
-    const board = new Array(9).fill(null);
-    let Player1 = ''
-    let Player2 = ''
+    let board = new Array(9).fill(null);
+    
     const move = function (position, symbol) {
         board[position] = symbol;
     };
@@ -31,32 +30,46 @@ const display = (function () {
 const game = (function () {
 
 
-    const firstPlayersTurn = true;
+
+    let Player1 = ''
+    let Player2 = ''
+
+    let firstPlayersTurn = [true];
 
     const changePlayer = () => {
-        if (firstPlayersTurn === true) {
-            firstPlayersTurn = false;
+        if (firstPlayersTurn[0] === true) {
+            firstPlayersTurn[0] = false;
         } else {
-            firstPlayersTurn = true;
+            firstPlayersTurn[0] = true;
         }
     };
 
     const checkwinner = function () {
-        if (!(null in gameboard.board.slice(0,3)) && (gameboard.board[0] === gameboard.board[1]) && (gameboard.board[1]=== gameboard.board[2])) {
+        console.log(gameboard.board.slice(0,3))
+        console.log(null in gameboard.board.slice(0,3))
+        if (!(gameboard.board.slice(0,3).includes(null)) && (gameboard.board[0] === gameboard.board[1]) && (gameboard.board[1] === gameboard.board[2])) {
+            console.log('win on row 1');
             return true;
-        } else if (!(null in gameboard.board.slice(3,6)) && (gameboard.board[3] === gameboard.board[4]) && (gameboard.board[4]=== gameboard.board[5])) {
+        } else if (!(gameboard.board.slice(3,6).includes(null)) && (gameboard.board[3] === gameboard.board[4]) && (gameboard.board[4]=== gameboard.board[5])) {
+            console.log('win on row 2');
             return true;
-        } else if (!(null in gameboard.board.slice(6,9)) && (gameboard.board[6] === gameboard.board[7]) && (gameboard.board[7]=== gameboard.board[8])) {
+        } else if (!(gameboard.board.slice(6,9).includes(null)) && (gameboard.board[6] === gameboard.board[7]) && (gameboard.board[7]=== gameboard.board[8])) {
+            console.log('win on row 3');
             return true;
-        } else if (!(null in gameboard.board.slice(0,4)) && (gameboard.board[0] === gameboard.board[3]) && (gameboard.board[3]=== gameboard.board[6])) {
+        } else if (!((gameboard.board[0] === null) || (gameboard.board[3] === null) || (gameboard.board[6] === null)) && (gameboard.board[0] === gameboard.board[3]) && (gameboard.board[3]=== gameboard.board[6])) {
+            console.log('win on column 1');
             return true;
-        } else if (!(null in gameboard.board.slice(0,4)) && (gameboard.board[1] === gameboard.board[4]) && (gameboard.board[4]=== gameboard.board[7])) {
+        } else if (!((gameboard.board[1] === null) || (gameboard.board[4] === null) || (gameboard.board[7] === null)) && (gameboard.board[1] === gameboard.board[4]) && (gameboard.board[4]=== gameboard.board[7])) {
+            console.log('win on column 2');
             return true;
-        } else if (!(null in gameboard.board.slice(0,4)) && (gameboard.board[2] === gameboard.board[5]) && (gameboard.board[5]=== gameboard.board[8])) {
+        } else if (!((gameboard.board[2] === null) || (gameboard.board[5] === null) || (gameboard.board[8] === null)) && (gameboard.board[2] === gameboard.board[5]) && (gameboard.board[5]=== gameboard.board[8])) {
+            console.log('win on column 3');
             return true;               
-        } else if (!(null in gameboard.board.slice(0,4)) && (gameboard.board[0] === gameboard.board[4]) && (gameboard.board[4]=== gameboard.board[8])) {  
+        } else if (!((gameboard.board[0] === null) || (gameboard.board[4] === null) || (gameboard.board[8] === null)) && (gameboard.board[0] === gameboard.board[4]) && (gameboard.board[4]=== gameboard.board[8])) {
+            console.log('win on forward slash');
             return true;
-        } else if (!(null in gameboard.board.slice(0,4)) && (gameboard.board[6] === gameboard.board[4]) && (gameboard.board[4]=== gameboard.board[2])) {
+        } else if (!((gameboard.board[2] === null) || (gameboard.board[4] === null) || (gameboard.board[6] === null)) && (gameboard.board[6] === gameboard.board[4]) && (gameboard.board[4]=== gameboard.board[2])) {
+            console.log('win on back slash');
             return true;
         } else {
             return false;
@@ -84,20 +97,21 @@ const player2Symbol = document.querySelector('#Player_2_Symbol');
 //activate board function upon game start
 function activateBoard() {
     boardDisplay.addEventListener('click', (e) => {
-        let square = e.currentTarget.dataset.position;
-        if (!(gameboard.board[Number(square)] === null)) {
+        let square = e.target.dataset.position;
+        console.log(Number(square))
+        if (gameboard.board[Number(square)] === null) {
             let currentPlayer = '';
-            if (game.firstPlayersTurn) {
-                currentPlayer = Player1;
+            if (game.firstPlayersTurn[0]) {
+                currentPlayer = game.Player1;
             } else {
-                currentPlayer = Player2;
+                currentPlayer = game.Player2;
             }
             gameboard.board[Number(square)] = currentPlayer.symbol;
-            e.currentTarget.textContent = gameboard.board[Number(square)];
+            e.target.textContent = gameboard.board[Number(square)];
             if (game.checkwinner()) {
-                console.log(`${currentPlayer.name} wins!`);
+                console.log(`${currentPlayer.name} wins!`)
                 gameboard.clear_board();
-            };
+            }
             game.changePlayer();
         }
     });
@@ -109,8 +123,8 @@ gameStart.addEventListener("click", ()=>{dialog.showModal();});
 
 form.addEventListener('submit', (e)=>{
     e.preventDefault();
-    gameboard.Player1 = {'name':player1Name.value, 'symbol':player1Symbol.value}
-    gameboard.Player2 = player(player2Name.value, player2Symbol.value)
+    game.Player1 = player(player1Name.value, player1Symbol.value)
+    game.Player2 = player(player2Name.value, player2Symbol.value)
     activateBoard();
     form.reset();
     dialog.close();
