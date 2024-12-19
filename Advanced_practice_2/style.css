@@ -7,8 +7,15 @@
 
 #boardDisplay div {
     border: solid, blue;
+    text-align: center;
+    font-size: 2em;
 }
 
 #boardDisplay div:hover {
     background-color: grey;
+}
+
+#gameState {
+    text-align: center;
+    font-size: 2em;
 }
